@@ -27,14 +27,16 @@ class BasicShape(ABC):
     # Setters wait to run until the value is set
     @area.setter
     def area(self, value):
-        self._area = value
+        # Checks to see if the value given by the user is greater than or equal to 0, since area cannot be negative, and if it is, sets the value of the area to the value given by the user
+        if value >= 0:
+            self._area = value
 
     # A setter that waits to see if .name is called, and if it is, sets the value of the name to the value given by the user, which is a string
     @name.setter
     def name(self, value):
         self._name = value
 
-    #
+    # An abstract method that is here to ensure child classes have this method to calculate the area, since different shapes will use different formulas to calculate area, it cannot be declared here
     @abstractmethod
     def calc_area(self):
         pass

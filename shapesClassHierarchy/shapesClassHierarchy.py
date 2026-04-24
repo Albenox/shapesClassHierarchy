@@ -1,4 +1,4 @@
-#
+# A program that uses an abstract parent class and many child classes to hold information of shapes that can be reused, passed through, and edited efficiently
 
 # Abstract base class that holds the basic shape properties and methods
 from abc import ABC, abstractmethod
@@ -121,3 +121,67 @@ class Rectangle(BasicShape):
     # A method that calculates the area of the rectangle using the formula length * width, and sets the value of the area property to the calculated area
     def calc_area(self):
         self._area = self._length * self._width
+
+# A child class that inherits from the Rectangle class, and represents a square, with a property for side, and a method to calculate the area of the square, which is the same as the area of a rectangle with length and width equal to the side of the square
+class Square(Rectangle):
+    def __init__(self, s, n = "Square"):
+        # Calls the __init__ method of the parent class to initialize the area and name properties, setting the length and width from rectangle to the value of side
+        super().__init__(s, s, n)
+        # Protected instance variable for side, with placeholder blank value so it can still be used without error of not being initialized
+        self._side = s
+        
+    # Property for side that waits to see if .side is called, and if it is, returns the value of the side
+    @property
+    def side(self):
+        return self._side
+
+    # Setter for side, that also recalculates the area when called, and checks for valid input, setting the length and width from rectangle to the value of side
+    @side.setter
+    def side(self, value):
+        if value >= 0:
+            self._side = value
+            self._length = value
+            self._width = value
+            # Calls to calc_area to recalculate the area of the square when the side is changed
+            self.calc_area()
+
+# The main function that will test all of the shapes and their classes
+def main():
+    # List of all shapes and their info
+    shapes = [
+        Circle(0, 0, 5, "Circle_1"),
+        Circle(2, 3, 4, "Circle_2"),
+        Rectangle(4, 6, "Rectangle_1"),
+        Rectangle(2, 18, "Rectangle_2"),
+        Square(101, "Square_1"),
+        Square(3, "Square_2")
+    ]
+    
+    # Prints the name and shape of all shapes
+    print("--- Polymorphism check ---")
+    for shape in shapes:
+        print(f"{shape.name} Area = {shape.area:.2f}")
+
+    print()
+    print("--- Getter/setter check ")
+
+    # Prints different shapes according to index of the for loop, that will display their information, and then display the information once more after it has been modified, in this case, doubled
+    circle = shapes[0]
+    print(f"{circle.name} Current: {circle.radius}, {circle.area:.2f}")
+    circle.radius = circle.radius * 2
+    print(f"{circle.name} Doubled: {circle.radius}, {circle.area:.2f}")
+
+    rectangle = shapes[2]
+    print(f"{rectangle.name} Current: {rectangle.length}, {rectangle.width} {rectangle.area:.2f}")
+    rectangle.length = rectangle.length * 2
+    rectangle.width = rectangle.width * 2
+    print(f"{rectangle.name} Doubled: {rectangle.length}, {rectangle.width} {rectangle.area:.2f}")
+
+    square = shapes[4]
+    print(f"{square.name} Current: {square.side}, {square.area:.2f}")
+    square.side = square.side * 2
+    print(f"{square.name} Doubled: {square.side}, {square.area:.2f}")
+
+# Runs main
+if __name__ == "__main__":
+    main()
